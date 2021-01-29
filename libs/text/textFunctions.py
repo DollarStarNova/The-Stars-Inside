@@ -3,7 +3,6 @@ import pygame
 
 def wrap_and_render_text(text, myfont, dimensions):
     final_image = pygame.Surface(dimensions, pygame.SRCALPHA, 32)
-    # dimensions = (int(dimensions[0]*0.9), int(dimensions[1]*0.9))
     end_of_text = False
     words = text.split(" ")
     counter = 0
