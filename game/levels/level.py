@@ -1,11 +1,14 @@
 import pygame
 import os
 from game.libs.text.textFunctions import wrap_and_render_text
+from game.libs.player.player import player
 
 
 class level():
 
     def __init__(self, screen):
+        if not hasattr(self, "player"):
+            self.player = player(0, screen.get_height()/2)
         self.screen = screen
         pygame.mixer.pre_init()
 
@@ -57,5 +60,5 @@ class level():
             self.player.draw(self.screen)
 
     def handle_event(self, event):
-        if self.player:
+        if hasattr(self, "player"):
             self.player.handle_event(event)
