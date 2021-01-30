@@ -13,6 +13,7 @@ class player():
         self.acc = 1
         self.max_speed = 8
         self.breaking_force = 0.05
+        self.respect_map_bounds_bool = 1
         self.sprites = self.load_sprites(["Player1ship_Placeholder.png", "Player1ship_Placeholder_turnleft.png",
                                           "Player1ship_Placeholder_turnright.png", "Player1ship_Placeholder_hurt.png"], 270)
         self.current_sprite = self.sprites[0]
@@ -60,12 +61,14 @@ class player():
                 self.xvel = max(self.xvel - self.breaking_force, 0)
             else:
                 self.xvel = min(self.xvel + self.breaking_force, 0)
-        self.xpos = max(self.xpos, self.current_sprite["width"]/2)
-        self.xpos = min(self.xpos, surface.get_width() -
-                        self.current_sprite["width"]/2)
-        self.ypos = max(self.ypos, self.current_sprite["height"]/2)
-        self.ypos = min(self.ypos, surface.get_height() -
-                        self.current_sprite["height"]/2)
+
+        if self.respect_map_bounds_bool:
+            self.xpos = max(self.xpos, self.current_sprite["width"]/2)
+            self.xpos = min(self.xpos, surface.get_width() -
+                            self.current_sprite["width"]/2)
+            self.ypos = max(self.ypos, self.current_sprite["height"]/2)
+            self.ypos = min(self.ypos, surface.get_height() -
+                            self.current_sprite["height"]/2)
 
     def draw(self, surface):
         if self.player_projectile.count > 0:
@@ -99,3 +102,9 @@ class player():
             sprites[i]["height"] = sprites[i]["image"].get_height()
             i += 1
         return sprites
+
+    def respect_map_bounds(self, respect_bounds):
+        if respect_bounds:
+            self.respect_map_bounds_bool = 1
+        else:
+            self.respect_map_bounds_bool = 0

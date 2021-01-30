@@ -32,7 +32,7 @@ class level():
     @staticmethod
     def load_music(filename):
         pygame.mixer.music.load(
-            os.path.join("game", "assets", "music", "Gameplay Loops", filename))
+            os.path.join("game", "assets", "music", filename))
 
     @staticmethod
     def play_music():
