@@ -1,7 +1,7 @@
 import pygame
 
 
-def wrap_and_render_text(text, myfont, dimensions):
+def wrap_and_render_text(text, myfont, dimensions, align="left", colour=pygame.Color(150, 150, 150)):
     final_image = pygame.Surface(dimensions, pygame.SRCALPHA, 32)
     end_of_text = False
     words = text.split(" ")
@@ -32,11 +32,16 @@ def wrap_and_render_text(text, myfont, dimensions):
                         words.insert(counter, word2)
                     else:
                         too_long = True
-        final_image.blit(myfont.render(
-            textline, True, pygame.Color(150, 150, 150)), (0, blitposition))
+        renderline = myfont.render(textline, True, colour)
+        if align == "left":
+            x_align = 0
+        elif align == "right":
+            x_align = dimensions[0]-renderline.get_width()
+        else:
+            x_align = 0.5*(dimensions[0]-renderline.get_width())
+        final_image.blit(renderline, (x_align, blitposition))
         blitposition += myfont.size(textline)[1]
         textline = ""
-        render_size = (0, 0)
         too_long = False
         first_word = True
     return final_image

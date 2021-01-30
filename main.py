@@ -1,9 +1,9 @@
 import pygame
 import sys
-from levels.menu import main_menu
+from game.levels.menu import main_menu
 
 if __name__ == "__main__":
-    screen = pygame.display.set_mode(size=(800, 600))
+    screen = pygame.display.set_mode(size=(1280, 720))
     pygame.init()
     current_scene = main_menu(screen)
 
@@ -18,6 +18,7 @@ if __name__ == "__main__":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            current_scene.handle_event(event)
         fpsClock.tick(FPS)
     pygame.quit()
     sys.exit(0)
