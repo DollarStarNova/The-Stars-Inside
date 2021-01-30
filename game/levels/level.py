@@ -2,6 +2,7 @@ import pygame
 import os
 from game.libs.text.textFunctions import wrap_and_render_text
 from game.libs.player.player import player
+from game.libs.player.healthbar import healthbar
 
 
 class level():
@@ -9,6 +10,7 @@ class level():
     def __init__(self, screen):
         if not hasattr(self, "player"):
             self.player = player(0, screen.get_height()/2)
+        self.healthbar = healthbar()
         self.screen = screen
         pygame.mixer.pre_init()
 
@@ -52,12 +54,16 @@ class level():
             pygame.mixer.music.play()
 
     def update(self):
-        if self.player:
+        if hasattr(self, "player"):
             self.player.update(self.screen)
+        if hasattr(self, "healthbar"):
+            self.healthbar.update()
 
     def draw(self):
-        if self.player:
+        if hasattr(self, "player"):
             self.player.draw(self.screen)
+        if hasattr(self, "healthbar"):
+            self.healthbar.draw(self.screen)
 
     def handle_event(self, event):
         if hasattr(self, "player"):

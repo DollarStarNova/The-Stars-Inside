@@ -29,8 +29,8 @@ class level_one(level):
             self.xoffset += self.scroll_speed
             if self.xoffset > self.max_x_offset:
                 self.xoffset = self.max_x_offset
-        self.player.update(self.screen)
         level.loop_music(3555, "end")
+        super().update()
 
     def draw(self):
         # self.screen.blit(self.background, (0, 0))
@@ -67,5 +67,5 @@ class level_one(level):
                 self.tilemapsurface.blit(tile[0], (tile[1], tile[2]))
         self.screen.blit(self.tilemapsurface, (-self.tilesize -
                                                self.xoffset % 1 * self.tilesize, 0))
-        self.player.draw(self.screen)
+        super().draw()
         pygame.display.flip()
