@@ -10,7 +10,7 @@ class main_menu(level):
 
         main_font_large = pygame.font.Font(os.path.join(
             "game", "assets", "fonts", "SpaceAndAstronomy-pZRD.ttf"), 50)
-        title = "Working Title Here"
+        title = "Two Michaels Games Presents"
         self.titlerender = wrap_and_render_text(
             title, main_font_large, screen.get_size(), align="center")
 

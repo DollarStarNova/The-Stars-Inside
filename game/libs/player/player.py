@@ -1,5 +1,6 @@
 import pygame
 import os
+from game.libs.projectiles.player_projectile import player_projectile
 
 
 class player():
@@ -12,33 +13,40 @@ class player():
         self.acc = 1
         self.max_speed = 8
         self.breaking_force = 0.05
-        sprite_path = os.path.join(
-            "game", "assets", "Art", "Player1ship_Placeholder.png")
-        self.sprite = pygame.image.load(sprite_path).convert_alpha()
-        self.sprite = pygame.transform.rotate(self.sprite, self.rotation)
-        self.width = self.sprite.get_width()
-        self.height = self.sprite.get_height()
+        self.sprites = self.load_sprites(["Player1ship_Placeholder.png", "Player1ship_Placeholder_turnleft.png",
+                                          "Player1ship_Placeholder_turnright.png", "Player1ship_Placeholder_hurt.png"], 270)
+        self.current_sprite = self.sprites[0]
+        self.player_projectile = player_projectile()
 
     def move(self, dir):
-        if dir == "down":
+        if dir == 0:
             self.yvel = min(self.yvel+self.acc, self.max_speed)
-        if dir == "up":
+        if dir == 1:
             self.yvel = max(self.yvel-self.acc, -self.max_speed)
-        if dir == "right":
-            self.xvel = min(self.xvel+self.acc, self.max_speed)
-        if dir == "left":
+        if dir == 2:
             self.xvel = max(self.xvel-self.acc, -self.max_speed)
+        if dir == 3:
+            self.xvel = min(self.xvel+self.acc, self.max_speed)
 
-    def update(self):
+    def shoot(self):
+        self.player_projectile.spawn(
+            self.xpos, self.ypos-self.current_sprite["width"]/4, self.xvel, self.yvel)
+
+    def update(self, surface):
+        if self.player_projectile.count > 0:
+            self.player_projectile.update(surface)
+
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_s]:
-            self.move("down")
-        if keys[pygame.K_w]:
-            self.move("up")
-        if keys[pygame.K_a]:
-            self.move("left")
-        if keys[pygame.K_d]:
-            self.move("right")
+        if keys[pygame.K_s] or keys[pygame.K_DOWN]:
+            self.move(0)
+        if keys[pygame.K_w] or keys[pygame.K_UP]:
+            self.move(1)
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
+            self.move(2)
+        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+            self.move(3)
+        if keys[pygame.K_SPACE]:
+            self.shoot()
 
         if self.yvel != 0:
             self.ypos += self.yvel
@@ -52,11 +60,42 @@ class player():
                 self.xvel = max(self.xvel - self.breaking_force, 0)
             else:
                 self.xvel = min(self.xvel + self.breaking_force, 0)
+        self.xpos = max(self.xpos, self.current_sprite["width"]/2)
+        self.xpos = min(self.xpos, surface.get_width() -
+                        self.current_sprite["width"]/2)
+        self.ypos = max(self.ypos, self.current_sprite["height"]/2)
+        self.ypos = min(self.ypos, surface.get_height() -
+                        self.current_sprite["height"]/2)
 
     def draw(self, surface):
-        surface.blit(self.sprite, (self.xpos-self.width /
-                                   2, self.ypos-self.height/2))
+        if self.player_projectile.count > 0:
+            self.player_projectile.draw(surface)
+
+        if self.yvel > 6:
+            self.current_sprite = self.sprites[2]
+        elif self.yvel < -6:
+            self.current_sprite = self.sprites[1]
+        else:
+            self.current_sprite = self.sprites[0]
+
+        surface.blit(self.current_sprite["image"], (self.xpos-self.current_sprite["width"] /
+                                                    2, self.ypos-self.current_sprite["height"]/2))
 
     def handle_event(self, event):
         #
         pass
+
+    def load_sprites(self, sprite_list, rotation):
+        sprites = []
+        i = 0
+        for sprite in sprite_list:
+            sprite_path = os.path.join(
+                "game", "assets", "Art", sprite)
+
+            sprites.append({})
+            tempimage = pygame.image.load(sprite_path).convert_alpha()
+            sprites[i]["image"] = pygame.transform.rotate(tempimage, rotation)
+            sprites[i]["width"] = sprites[i]["image"].get_width()
+            sprites[i]["height"] = sprites[i]["image"].get_height()
+            i += 1
+        return sprites

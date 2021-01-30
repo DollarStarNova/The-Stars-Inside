@@ -50,7 +50,7 @@ class level():
 
     def update(self):
         if self.player:
-            self.player.update()
+            self.player.update(self.screen)
 
     def draw(self):
         if self.player:
