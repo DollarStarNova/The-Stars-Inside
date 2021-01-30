@@ -1,5 +1,6 @@
 import pygame
 import os
+import random
 
 
 class player_projectile():
@@ -17,8 +18,19 @@ class player_projectile():
         self.current_projectile = {
             "speed": 20,
             "life": 30,
-            "delay": 5,
-            "sprite": self.sprite
+            "delay": 15,
+            "sprite": self.sprite,
+            "sounds":
+            [
+                pygame.mixer.Sound(os.path.join(
+                    "game", "assets", "sounds", "lazer1-1.ogg")),
+                pygame.mixer.Sound(os.path.join(
+                    "game", "assets", "sounds", "lazer1-2.ogg")),
+                pygame.mixer.Sound(os.path.join(
+                    "game", "assets", "sounds", "lazer1-3.ogg")),
+                pygame.mixer.Sound(os.path.join(
+                    "game", "assets", "sounds", "lazer1-4.ogg")),
+            ]
         }
 
         self.instances = []
@@ -26,6 +38,14 @@ class player_projectile():
     def spawn(self, xpos, ypos, xvel, yvel):
         if self.last_shot <= 0:
             self.count += 1
+            pygame.mixer.Sound.play(self.current_projectile["sounds"]
+                                    [random.randint(
+                                        0, len(
+                                            self.current_projectile["sounds"]
+                                        )-1
+                                    )
+            ]
+            )
             self.instances.append(
                 {
                     "xpos": xpos,

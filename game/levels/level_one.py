@@ -10,6 +10,7 @@ class level_one(level):
         self.yoffset = 0
         self.tile_list = []
         self.stop_scrolling = False
+        self.scroll_speed = 0.05
 
         super().__init__(screen)
         self.tilemapsurface = pygame.Surface(
@@ -19,14 +20,17 @@ class level_one(level):
         self.tilemap = pytmx.load_pygame(tilemappath)
         self.tilesize = self.tilemap.tilewidth
         self.max_x_offset = self.tilemap.width - screen.get_width()/self.tilesize
-        # self.set_background("HOr_ScrollingStarfield01_720.png", 1)
+        level.load_music(os.path.join("Gameplay Loops",
+                                      "Gameplay Loop 1 (Loop @ 0_03_555 seconds).ogg"))
+        level.play_music()
 
     def update(self):
         if not self.stop_scrolling:
-            self.xoffset += 0.1
+            self.xoffset += self.scroll_speed
             if self.xoffset > self.max_x_offset:
                 self.xoffset = self.max_x_offset
         self.player.update(self.screen)
+        level.loop_music(3555, "end")
 
     def draw(self):
         # self.screen.blit(self.background, (0, 0))
