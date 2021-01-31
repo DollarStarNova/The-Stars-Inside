@@ -17,6 +17,5 @@ class level_one(level):
         super().update()
 
     def draw(self):
-        self.draw_tiles()
         super().draw()
         pygame.display.flip()

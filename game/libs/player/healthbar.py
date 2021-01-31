@@ -6,7 +6,7 @@ class healthbar():
     def __init__(self, position=(50, 50)):
         self.displayed = False
         self.position = position
-        self.image_dir = os.path.join("game", "assets", "Art")
+        self.image_dir = os.path.join("game", "assets", "Art", "UI")
         self.offbarimage = pygame.image.load(os.path.join(
             self.image_dir, "UI_Health_health-baroff.png")).convert_alpha()
         self.onbarimage = pygame.image.load(os.path.join(

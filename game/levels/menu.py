@@ -10,7 +10,7 @@ class main_menu(level):
     def __init__(self, screen):
 
         self.titlerender = pygame.image.load(os.path.join(
-            "game", "assets", "Art", "Title.png")).convert_alpha()
+            "game", "assets", "Art", "UI", "Title.png")).convert_alpha()
         self.titlerender = pygame.transform.scale(self.titlerender, (int(
             0.5*self.titlerender.get_width()), int(0.5*self.titlerender.get_height())))
 

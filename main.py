@@ -7,6 +7,7 @@ from game.levels.level_one import level_one
 if __name__ == "__main__":
     screen = pygame.display.set_mode(size=(1280, 720))
     pygame.init()
+    # pygame.time.wait(7000)
     # current_scene = main_menu(screen)
     current_scene = level_one(screen)
 

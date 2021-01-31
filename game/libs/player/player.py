@@ -1,6 +1,6 @@
 import pygame
 import os
-from game.libs.projectiles.player_projectile import player_projectile
+from game.libs.projectiles.projectile import player_projectile
 
 
 class player():
@@ -37,17 +37,7 @@ class player():
         if self.player_projectile.count > 0:
             self.player_projectile.update(surface)
 
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_s] or keys[pygame.K_DOWN]:
-            self.move(0)
-        if keys[pygame.K_w] or keys[pygame.K_UP]:
-            self.move(1)
-        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
-            self.move(2)
-        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
-            self.move(3)
-        if keys[pygame.K_SPACE]:
-            self.shoot()
+        self.handle_input()
 
         if self.yvel != 0:
             self.ypos += self.yvel
@@ -93,7 +83,7 @@ class player():
         i = 0
         for sprite in sprite_list:
             sprite_path = os.path.join(
-                "game", "assets", "Art", sprite)
+                "game", "assets", "Art", "Player", sprite)
 
             sprites.append({})
             tempimage = pygame.image.load(sprite_path).convert_alpha()
@@ -108,3 +98,16 @@ class player():
             self.respect_map_bounds_bool = 1
         else:
             self.respect_map_bounds_bool = 0
+
+    def handle_input(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_s] or keys[pygame.K_DOWN]:
+            self.move(0)
+        if keys[pygame.K_w] or keys[pygame.K_UP]:
+            self.move(1)
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
+            self.move(2)
+        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+            self.move(3)
+        if keys[pygame.K_SPACE]:
+            self.shoot()
